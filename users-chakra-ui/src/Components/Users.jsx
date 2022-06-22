@@ -17,7 +17,12 @@ export const Users = () => {
 
   return (
     <div>
-      <Heading m="5" textDecoration="underline">
+      <Heading
+        m="5"
+        textDecoration="underline"
+        bgGradient="linear(to-l, #7928CA, #FF0080)"
+        bgClip="text"
+      >
         Users List
       </Heading>
       <table style={{ margin: "auto" }}>

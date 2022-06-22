@@ -1,7 +1,21 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
-import { Button, Heading, Input, Image } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  Input,
+  Image,
+  useDisclosure,
+  ModalOverlay,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Text,
+  ModalFooter,
+} from "@chakra-ui/react";
 import axios from "axios";
 
 export const UserDetails = () => {
@@ -31,10 +45,20 @@ export const UserDetails = () => {
       headers: { "Content-Type": "application/json" },
     });
     // console.log(name, avatar);
-    alert("Yay! Data Modified");
+    // alert("Yay! Data Modified");
     setEdit(false);
     setShowform(false);
   };
+
+  const OverlayOne = () => (
+    <ModalOverlay
+      bg="blackAlpha.300"
+      backdropFilter="blur(10px) hue-rotate(90deg)"
+    />
+  );
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = useState(<OverlayOne />);
 
   const { mutate } = useMutation(handleEditSubmit);
   if (isLoading) return <h1>Loading...</h1>;
@@ -49,9 +73,19 @@ export const UserDetails = () => {
       </Link>
 
       {edit ? (
-        <Heading>Existing User Details</Heading>
+        <Heading
+          bgGradient="linear(to-l, #2f124d, , pink.500 , #FF0080)"
+          bgClip="text"
+          //   border="1px solid black"
+          width="30%"
+          m="auto"
+        >
+          Existing User Details
+        </Heading>
       ) : (
-        <Heading>Updated User Details</Heading>
+        <Heading bgGradient="linear(to-l, #7928CA, #FF0080)" bgClip="text">
+          Updated User Details
+        </Heading>
       )}
 
       <div>
@@ -96,12 +130,37 @@ export const UserDetails = () => {
           </form>
           <br />
           <Button
-            variant="outline"
-            colorScheme="teal"
-            onClick={handleEditSubmit}
+            onClick={() => {
+              setOverlay(<OverlayOne />);
+              onOpen();
+            }}
           >
             Submit
           </Button>
+
+          <Modal isCentered isOpen={isOpen} onClose={onClose}>
+            {overlay}
+            <ModalContent>
+              <ModalHeader>Submit?</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>
+                  Are you sure you want to Update the{" "}
+                  <Text color="red">Name: {name}</Text>
+                  {avatar.length > 0 ? (
+                    <Text color="red"> Avatar: {avatar}</Text>
+                  ) : (
+                    ""
+                  )}
+                </Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={(onClose, handleEditSubmit)}>
+                  Yes, Update!
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </div>
       ) : (
         ""
