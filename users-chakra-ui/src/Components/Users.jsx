@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Button, Heading } from "@chakra-ui/react";
+import { Button, Heading, Image, Text } from "@chakra-ui/react";
 
 export const Users = () => {
   // const [name, setName] = useState("");
@@ -29,8 +29,17 @@ export const Users = () => {
         {data.data.map((e, i) => (
           <tr key={e.id}>
             <td>{i + 1 + "."}</td>
-            <td>{e.name}</td>
-            <img src={e.avatar} alt="" style={{ width: "50px" }} />
+            <td>
+              <Text as="cite">{e.name}</Text>
+            </td>
+            <Image
+              borderRadius="full"
+              boxSize="50px"
+              src={e.avatar}
+              alt={e.name}
+              m="auto"
+              my="1"
+            />
             <td>
               <Link to={`/userdetails/${e.id}`}>
                 <Button
