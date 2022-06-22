@@ -163,7 +163,7 @@ export const UserDetails = () => {
           </Modal>
         </div>
       ) : (
-        ""
+        <Heading mt="50px">Yay!, New Details Updated</Heading>
       )}
     </div>
   );
